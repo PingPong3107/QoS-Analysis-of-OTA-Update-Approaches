@@ -6,4 +6,5 @@ I have analyzed OTA-Update approaches on their Quality of Service Trade-Offs and
 * __doc:__ Containing the architectural decisions covered in the Thesis.
 * __gatling-gradle:__ Gatling load tests used for performance testing.
 * __kubefiles:__ YAML files that were used for deployments on the cluster. Not maintained! Still, they should give a good idea on how the prototypes were deployed.
+* __Schwendinger.pdf:__ The thesis document.Update
 
