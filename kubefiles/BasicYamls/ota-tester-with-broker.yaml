@@ -1,0 +1,22 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ota-tester-with-broker-deployment
+  namespace: ota-tester
+spec:
+  selector:
+    matchLabels:
+      app: ota-tester-with-broker
+  template:
+    metadata:
+      labels:
+        app: ota-tester-with-broker
+    spec:
+      containers:
+      - name: ota-tester-with-broker
+        image: pingpong3107/ota-tester-with-broker
+        ports:
+        - containerPort: 8080
+        env:
+          - name: DELTA_SIMILARITY
+            value: "0.6"

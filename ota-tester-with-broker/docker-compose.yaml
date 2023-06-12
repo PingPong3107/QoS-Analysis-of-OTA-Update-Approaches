@@ -1,0 +1,20 @@
+services:
+  app:
+    image: ota-tester-with-broker
+    ports:
+      - 8080:8080
+    environment:
+      DELTA_SIMILARITY: 0.4
+
+  minio:
+    image: bitnami/minio
+    environment:
+      MMINIO_DEFAULT_BUCKETS: imagerepo:public
+      MINIO_ROOT_USER: minio99
+      MINIO_ROOT_PASSWORD: minio123
+
+  mongodb:
+    image: mongo
+
+  rabbit:
+    image: rabbitmq:3-management

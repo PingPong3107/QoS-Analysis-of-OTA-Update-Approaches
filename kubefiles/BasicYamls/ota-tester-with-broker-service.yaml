@@ -1,0 +1,12 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: ota-tester-service
+  namespace: ota-tester
+spec:
+  type: ClusterIP
+  selector:
+    app: ota-tester-with-broker
+  ports:
+  - port: 8080
+    targetPort: 8080

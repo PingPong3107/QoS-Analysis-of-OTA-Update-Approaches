@@ -1,0 +1,33 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: kafka-ingress
+  namespace: ota-tester
+  annotations:
+    nginx.ingress.kubernetes.io/client_max_body_size: "900m"
+    nginx.ingress.kubernetes.io/proxy-body-size: "900m"
+    nginx.ingress.kubernetes.io/proxy-read-timeout: "600"
+    nginx.ingress.kubernetes.io/proxy-send-timeout: "600"
+spec:
+  ingressClassName: nginx
+  rules:
+    - host: ota-tester.com
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: ota-tester-pi-service
+                port:
+                  number: 8080
+    - host: ota-tester-with-broker.com
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: ota-tester-service
+                port:
+                  number: 8080
