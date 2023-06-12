@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: rabbit-service
+  namespace: broker-rabbit
+spec:
+  selector:
+    app: rabbit
+  ports:
+  - port: 15672
+    name: management
+    targetPort: 15672
+  - port: 5672
+    name: console
+    targetPort: 5672

@@ -1,0 +1,29 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ota-tester-pi-deployment
+  namespace: ota-tester
+spec:
+  selector:
+    matchLabels:
+      app: ota-tester-pi
+  template:
+    metadata:
+      labels:
+        app: ota-tester-pi
+    spec:
+      containers:
+      - name: ota-tester-pi
+        image: pingpong3107/ota-tester-pi
+        ports:
+        - containerPort: 8080
+        env:
+          - name: DELTA_SIMILARITY
+            value: "0.6"
+        resources:
+          limits:
+            cpu: "1"
+            memory: 500Mi
+          requests:
+            cpu: "1"
+            memory: 500Mi

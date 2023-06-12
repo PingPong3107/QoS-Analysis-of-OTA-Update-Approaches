@@ -1,0 +1,28 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: getnewimage40mb-elasticity
+  namespace: loadtester
+  labels:
+    app: getnewimage40mb-elasticity
+spec:
+  template:
+    spec:
+      nodeName: k8s-cluster3-7
+      containers:
+      - name: getnewimage40mb-elasticity
+        image: pingpong3107/gatling-loadtests
+        command: ["./gradlew",  "gatlingRun-elasticity.SimGetNewImageElasticity"]
+        env:
+          - name: pollingIntervalsHost
+            value: "ota-tester-pi-service.ota-tester.svc.cluster.local:8080/"
+          - name: imageId1
+            value: "mediumImage.bin"
+        volumeMounts:
+        - mountPath: /usr/gatling/build/reports/
+          name: "gatlingvol"
+      restartPolicy: Never
+      volumes:
+      - name: gatlingvol
+        persistentVolumeClaim:
+          claimName: gatling-results-claim-new

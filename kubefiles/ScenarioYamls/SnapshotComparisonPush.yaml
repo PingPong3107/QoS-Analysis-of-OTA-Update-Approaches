@@ -1,0 +1,40 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: snapshotcomparisonpush
+  namespace: loadtester
+  labels:
+    app: snapshotcomparisonpush
+spec:
+  template:
+    spec:
+      nodeName: k8s-cluster3-7
+      containers:
+      - name: snapshotcomparisonpush
+        image: pingpong3107/gatling-loadtests
+        command: ["./gradlew",  "gatlingRun-withBroker.SimContinuousCompareScenarioPush"]
+        env:
+          - name: numberOfCars
+            value: "200"
+          - name: wBHost
+            value: "ota-tester-service.ota-tester.svc.cluster.local:8080/"
+          - name: brokerHost
+            value: "rabbit-service.broker-rabbit.svc.cluster.local"
+          - name: numberOfCarsFirstBunch
+            value: "40"
+          - name: numberOfCarsSecondBunch
+            value: "40"
+          - name: numberOfCarsThirdBunch
+            value: "40"
+          - name: numberOfCarsForthBunch
+            value: "40"
+          - name: numberOfCarsFifthBunch
+            value: "40"       
+        volumeMounts:
+        - mountPath: /usr/gatling/build/reports/
+          name: "gatlingvol"
+      restartPolicy: Never
+      volumes:
+      - name: gatlingvol
+        persistentVolumeClaim:
+          claimName: gatling-results-claim-new

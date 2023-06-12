@@ -1,0 +1,34 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: pushdelta
+  namespace: loadtester
+  labels:
+    app: pushdelta
+spec:
+  template:
+    spec:
+      nodeName: k8s-cluster3-7
+      containers:
+      - name: pushdelta
+        image: pingpong3107/gatling-loadtests
+        command: ["./gradlew",  "gatlingRun-withBroker.SimPushDefaultDelta"]
+        env:
+          - name: numberOfCars
+            value: "400"
+          - name: wBHost
+            value: "ota-tester-service.ota-tester.svc.cluster.local:8080/"
+          - name: brokerHost
+            value: "rabbit-service.broker-rabbit.svc.cluster.local"
+          # - name: imageId1
+          #   value: "mediumImage.bin"
+          # - name: imageId2
+          #   value: "mediumImage2.bin"  
+        volumeMounts:
+        - mountPath: /usr/gatling/build/reports/
+          name: "gatlingvol"
+      restartPolicy: Never
+      volumes:
+      - name: gatlingvol
+        persistentVolumeClaim:
+          claimName: gatling-results-claim-new
